@@ -4,6 +4,7 @@ import 'antd/dist/antd.css'
 // 按需引入ui库组件
 import { Input, Button, List } from 'antd'
 import store from './store/index'
+import { changeInputAction, addItemAction, deleteItemAction } from './store/actionCreators'
 
 
 class TodoList extends Component {
@@ -13,9 +14,14 @@ class TodoList extends Component {
     this.state = store.getState()
 
     this.changeInputValue = this.changeInputValue.bind(this)
+    this.clickBtn = this.clickBtn.bind(this)
+    // this.deleteItem = this.deleteItem.bind(this)
+
+    // 订阅
     this.storeChange = this.storeChange.bind(this)
-    // 订阅（如果value绑定在了 state 里 必须订阅(subscribe)才能更新视图）
-    // 理解：为什么要订阅模式？ 因为redux中store的数据改变了，所以要在组件里的state重新赋值
+    // 当 store 发生改变，执行订阅。
+    // 订阅（如果value绑定了 state ,那就必须订阅(subscribe)才能更新视图）。
+    // 理解：为什么要订阅模式？ 因为redux中store的数据改变了，所以要在组件里的state重新赋值。
     store.subscribe(this.storeChange)
   }
   render() { 
@@ -28,22 +34,28 @@ class TodoList extends Component {
             onChange={this.changeInputValue}
             value={this.state.inputValue}
           />
-          <Button type='primary'>增加</Button>
+          <Button type='primary' onClick={this.clickBtn}>增加</Button>
         </div>
         <div style={{ margin: '10px', width: '300px'}}>
-          <List bordered dataSource={this.state.list} renderItem={ item => (<List.Item>{item}</List.Item>) } />
+          <List bordered dataSource={this.state.list} renderItem={ (item, index) => (<List.Item onClick={this.deleteItem.bind(this, index)}>{item}</List.Item>) } />
         </div>
       </div>
      );
   }
   changeInputValue (e) {
-    const action = {
-      type: 'changeInput',
-      value: e.target.value
-    }
+    const action = changeInputAction(e.target.value)
     // 把更改的数据用 dispatch派发 传给store，然后store接收后 会自动传给reducer.js
     store.dispatch(action)
   }
+  clickBtn () {
+    const action = addItemAction()
+    store.dispatch(action)
+  }
+  deleteItem (index) {
+    const action = deleteItemAction(index)
+    store.dispatch(action)
+  }
+  // 订阅
   storeChange () {
     // 组件内state 赋值为 store数据
     this.setState(store.getState())
