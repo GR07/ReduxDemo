@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-
+import axios from 'axios'
 import store from './store/index'
-import { changeInputAction, addItemAction, deleteItemAction } from './store/actionCreators'
+import { changeInputAction, addItemAction, deleteItemAction, getListAction } from './store/actionCreators'
 import TodoListUI from './TodoListUI'
 
 
@@ -32,6 +32,15 @@ class TodoList extends Component {
         deleteItem={this.deleteItem}
       />
      );
+  }
+  componentDidMount () {
+    axios.get('http://rap2api.taobao.org/app/mock/233908/getList').then((res) => {
+      const data = res.data
+      console.log(data)
+      const action = getListAction(data)
+      store.dispatch(action)
+    })
+    
   }
   changeInputValue (e) {
     const action = changeInputAction(e.target.value)
