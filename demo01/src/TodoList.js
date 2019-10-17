@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-// 阿里的ui库
-import 'antd/dist/antd.css'
-// 按需引入ui库组件
-import { Input, Button, List } from 'antd'
+import React, { Component } from 'react'
+
 import store from './store/index'
 import { changeInputAction, addItemAction, deleteItemAction } from './store/actionCreators'
+import TodoListUI from './TodoListUI'
 
 
 class TodoList extends Component {
@@ -15,7 +13,7 @@ class TodoList extends Component {
 
     this.changeInputValue = this.changeInputValue.bind(this)
     this.clickBtn = this.clickBtn.bind(this)
-    // this.deleteItem = this.deleteItem.bind(this)
+    this.deleteItem = this.deleteItem.bind(this)
 
     // 订阅
     this.storeChange = this.storeChange.bind(this)
@@ -26,20 +24,13 @@ class TodoList extends Component {
   }
   render() { 
     return ( 
-      <div style={{ margin: '10px' }}>
-        <div>
-          <Input 
-            placeholder={this.state.inputValue} 
-            style={{ width: '250px', marginRight: '10px'}}
-            onChange={this.changeInputValue}
-            value={this.state.inputValue}
-          />
-          <Button type='primary' onClick={this.clickBtn}>增加</Button>
-        </div>
-        <div style={{ margin: '10px', width: '300px'}}>
-          <List bordered dataSource={this.state.list} renderItem={ (item, index) => (<List.Item onClick={this.deleteItem.bind(this, index)}>{item}</List.Item>) } />
-        </div>
-      </div>
+      <TodoListUI 
+        changeInputValue={this.changeInputValue} 
+        inputValue={this.state.inputValue} 
+        clickBtn={this.clickBtn} 
+        list={this.state.list} 
+        deleteItem={this.deleteItem}
+      />
      );
   }
   changeInputValue (e) {
