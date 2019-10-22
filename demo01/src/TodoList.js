@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import store from './store/index'
-import { changeInputAction, addItemAction, deleteItemAction, getListAction } from './store/actionCreators'
+import { changeInputAction, addItemAction, deleteItemAction, getTodoList } from './store/actionCreators'
 import TodoListUI from './TodoListUI'
 
 
@@ -18,8 +17,8 @@ class TodoList extends Component {
     // 订阅
     this.storeChange = this.storeChange.bind(this)
     // 当 store 发生改变，执行订阅。
-    // 订阅（如果value绑定了 state ,那就必须订阅(subscribe)才能更新视图）。
-    // 理解：为什么要订阅模式？ 因为redux中store的数据改变了，所以要在组件里的state重新赋值。
+    // 订阅（必须订阅(subscribe)才能更新视图）。
+    // 理解：为什么要订阅模式？ 因为redux中store的数据改变了，所以要给组件里的state重新赋值。
     store.subscribe(this.storeChange)
   }
   render() { 
@@ -34,12 +33,8 @@ class TodoList extends Component {
      );
   }
   componentDidMount () {
-    axios.get('http://rap2api.taobao.org/app/mock/233908/getList').then((res) => {
-      const data = res.data
-      console.log(data)
-      const action = getListAction(data)
-      store.dispatch(action)
-    })
+    const action = getTodoList()
+    store.dispatch(action)
     
   }
   changeInputValue (e) {

@@ -1,8 +1,14 @@
-import {createStore} from 'redux'
+import {createStore, applyMiddleware, compose} from 'redux'
 import reducer from './reducer'
+import thunk from 'redux-thunk'
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}):compose
+
+const enhancer = composeEnhancers(applyMiddleware(thunk))
 // 赋值为 reducer.js 中的数据对象
+// 因为 createStore() 只能接收两个参数，所以用上面的增强函数合并 thunk和redux调试插件，再放入createStore()中。
 const store = createStore(
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // redux调试插件
+  enhancer
 )
 export default store
