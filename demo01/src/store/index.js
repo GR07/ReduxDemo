@@ -2,6 +2,7 @@ import {createStore, applyMiddleware, compose} from 'redux'
 import reducer from './reducer'
 import thunk from 'redux-thunk'
 
+// 这只是一个控制台的调试工具
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}):compose
 
 const enhancer = composeEnhancers(applyMiddleware(thunk))

@@ -4,6 +4,7 @@ import 'antd/dist/antd.css'
 // 按需引入ui库组件
 import { Input, Button, List } from 'antd'
 
+// 改为无状态组件
 const TodoListUI = (props) => {
   return ( 
     <div style={{ margin: '10px' }}>
@@ -24,6 +25,7 @@ const TodoListUI = (props) => {
 
 
 
+// 常规组件
 
 // class TodoListUI extends Component {
 //   constructor(props) {
